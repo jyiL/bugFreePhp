@@ -1,6 +1,10 @@
 BugFree
 =========
 
+[![Latest Stable Version](https://poser.pugx.org/jyl/bug-free-php/v/stable)](https://packagist.org/packages/jyl/bug-free-php)
+[![Total Downloads](https://poser.pugx.org/jyl/bug-free-php/downloads)](https://packagist.org/packages/jyl/bug-free-php)
+[![License](https://poser.pugx.org/jyl/bug-free-php/license)](https://packagist.org/packages/jyl/bug-free-php)
+
 佛祖保佑，永无bug！：） just for fun !
 自动在PHP代码头部加上神注释，默认支持utf8和GBK编码的php文件。
 
