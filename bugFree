@@ -1,0 +1,87 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types = 1);
+
+require 'vendor/autoload.php';
+
+use BugFree\Utils as Utils;
+
+$argvArr = $argv;
+
+if ($del = checkDelFoZu($argv)) array_pop($argvArr);
+
+Utils\AddNote::setDel($del);
+
+array_shift($argvArr);
+
+checkArgv($argvArr);
+
+checkArgvPath($argvArr);
+
+$res = Utils\AddNote::bugfree($argvArr);
+
+printf($res);exit(0);
+
+
+
+
+
+
+/**
+ * 检测目录参数是否存在
+ *
+ * @param array $argv
+ */
+function checkArgv($argv)
+{
+    if (!$argv) {
+        printf('请输入目录地址'.PHP_EOL);
+        exit(0);
+    }
+}
+
+/**
+ * 检测目录参数是否有效
+ *
+ * @param array $argv
+ */
+function checkArgvPath($argv)
+{
+    if (count($argv) > 1) {
+        // 多文件
+        array_map(function($val) {
+            checkFilePath($val);
+        }, $argv);
+    } else {
+        // 单文件
+        checkFilePath($argv[0]);
+    }
+}
+
+/**
+ * 检测目录路径是否存在
+ *
+ * @param string $argv
+ */
+function checkFilePath($filePath)
+{
+    if (!file_exists($filePath)) {
+        printf("{$filePath}--目录不存在".PHP_EOL);
+        exit(0);
+    }
+}
+
+/**
+ * 检测是否删除佛祖保佑
+ *
+ * @param array $argv
+ *
+ * @return boolean
+ */
+function checkDelFoZu($argv)
+{
+    if (array_pop($argv) === '-del') return true;
+
+    return false;
+}
