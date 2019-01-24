@@ -4,35 +4,32 @@ BugFree
 佛祖保佑，永无bug！：） just for fun !
 自动在PHP代码头部加上神注释，默认支持utf8和GBK编码的php文件。
 
-![](http://img.blog.csdn.net/20170323113756782)
-
 ## 安装
-* 1.composer 引入 
- 
-    composer require leon0204/bugfree dev-master 
+    composer create-project jyl/bug-free-php path 
 
-* 2.在文件中引入 
+## test
+    ./vendor/bin/phpunit
     
+
+## example php-cli
+    php bugFree path/filePath    // 单文件、目录
+    php bugFree path/filePath path/filePath    // 多文件、目录
+    php bugFree path -del    // 删除佛祖保佑
+    
+## example
     use BugFree\Utils as Utils;
     
-* 3.为filepath添加佛祖庇护：） 
-    
-    $res = Utils\AddNote::bugfree($filepath);
-    
-## 注意
+    Utils\AddNote::setDel(false);    // 设置属性 true-佛祖保佑 false-删除佛祖保佑
+    Utils\AddNote::bugfree([$file]);    // $file 文件路径或目录  
 
-* 请确保文件有足够的sudo权限 
+## ps
+更多用法查看tests示例
 
+## TODO
 
-## 更新日志
+- [x] 单文件
+- [x] 多文件
+- [x] 目录
 
-* 仅供娱乐。祝编码愉快 ^_^
-* v1.1
-init
-
-* v1.2
-添加freebug文件
-
-* V1.3
- 添加单文件佛祖守卫 :)
-
+## 感谢
+本扩展包根据 https://github.com/leon0204/bugFreePhp 修改 。
