@@ -27,6 +27,7 @@ BugFree
     use BugFree\Utils as Utils;
     
     Utils\AddNote::setDel(false);    // 设置属性 true-佛祖保佑 false-删除佛祖保佑
+    Utils\AddNote::setTargetCharset('utf-8');    // 设置文本编码格式属性
     Utils\AddNote::bugfree([$file]);    // $file 文件路径或目录  
 
 ## ps
