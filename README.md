@@ -14,6 +14,9 @@ BugFree
 ## test
     ./vendor/bin/phpunit
     
+## example shell
+    chmod +x bugFree.sh
+    ./bugFree.sh
 
 ## example php-cli
     php bugFree path/filePath    // 单文件、目录
