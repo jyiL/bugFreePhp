@@ -9,6 +9,17 @@ use BugFree\Utils as Utils;
 
 printf(file_get_contents('./src/Configs/fozuHeard.txt') . PHP_EOL);
 
+fwrite(STDOUT, "请输入文件类型[utf-8/gbk](Default utf-8 press Enter): ");
+
+$fileType = trim(fgets(STDIN));
+
+if (!checkFileType($fileType)) {
+    do {
+        if (!checkFileType($fileType)) fwrite(STDERR, "input error! 请输入正确的文件类型 " . PHP_EOL . "请输入文件类型[utf-8/gbk](Default utf-8 press Enter): ");
+        $fileType = trim(fgets(STDIN));
+    } while(!checkFileType($fileType));
+}
+
 fwrite(STDOUT, "请输入是否佛祖保佑[y/n]: ");
 
 $del = trim(fgets(STDIN));
@@ -93,6 +104,7 @@ switch ($number) {
 
 if ($argvArr) {
     Utils\AddNote::setDel($del);
+    Utils\AddNote::setTargetCharset($fileType);
     $res = Utils\AddNote::bugfree($argvArr, false);
 }
 
@@ -112,6 +124,22 @@ function checkNumber($number)
     if (!in_array($number, ["1", "2"])) return false;
 
     return $number;
+}
+
+/** 
+ * 检测数字
+ * 
+ * @param string $fileType
+ * 
+ * @return mixed
+ */
+function checkFileType($fileType)
+{
+    if (empty($fileType)) return "utf-8";
+
+    if (!in_array($fileType, ["utf-8", "gbk"])) return false;
+
+    return $fileType;
 }
 
 /** 

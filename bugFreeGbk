@@ -12,7 +12,7 @@ $argvArr = $argv;
 if ($del = checkDelFoZu($argv)) array_pop($argvArr);
 
 Utils\AddNote::setDel($del);
-Utils\AddNote::setTargetCharset('UTF-8');
+Utils\AddNote::setTargetCharset('GBK');
 
 array_shift($argvArr);
 

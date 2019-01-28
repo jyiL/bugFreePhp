@@ -13,6 +13,10 @@ class AddNote
 {
     static private $del = false;
 
+    static private $fileType = 'UTF-8';
+
+    static private $targetCharset = 'UTF-8';
+
     /**
      * 用佛祖保佑文件
      *
@@ -130,7 +134,27 @@ class AddNote
                 break;
         }
 
-        file_put_contents($filePath, $newAdd);
+        file_put_contents(self::characet($filePath), $newAdd);
+    }
+
+    /**
+     * 转换字符集编码
+     * 
+     * @param $data
+     * 
+     * @return string
+     */
+    static private function characet($data)
+    {
+
+        if (!empty($data)) {
+            if (strcasecmp(self::$fileType, self::$targetCharset) != 0) {
+                $data = mb_convert_encoding($data, self::$targetCharset, self::$fileType);
+                //				$data = iconv($fileType, $targetCharset.'//IGNORE', $data);
+            }
+        }
+
+        return $data;
     }
 
     /**
@@ -152,7 +176,20 @@ class AddNote
      */
     static private function getFoZuTxt()
     {
-        return file_get_contents(dirname(__DIR__).'/Configs/fozu.txt');
+        $_fozuFilePath = '';
+        switch (strtoupper(self::$targetCharset)) {
+            case 'UTF-8':
+                $_fozuFilePath = dirname(__DIR__).'/Configs/fozu_utf8.txt';
+                break;
+            case 'GBK':
+                $_fozuFilePath = dirname(__DIR__).'/Configs/fozu_gbk.txt';
+                break;
+            default:    
+                $_fozuFilePath = dirname(__DIR__).'/Configs/fozu_utf8.txt';
+                break;
+        }
+
+        return file_get_contents($_fozuFilePath);
     }
 
     /**
@@ -177,5 +214,15 @@ class AddNote
     static public function setDel(bool $del)
     {
         self::$del = $del;
+    }
+
+    /**
+     * 设置文本编码属性
+     *
+     * @param string $targetCharset
+     */
+    static public function setTargetCharset(string $targetCharset)
+    {
+        self::$targetCharset = $targetCharset;
     }
 }

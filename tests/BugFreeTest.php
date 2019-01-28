@@ -21,12 +21,14 @@ class BugFreeTest extends TestCase
         $file = dirname(__FILE__).'/demo1/demo1.php';
 
         Utils\AddNote::setDel(false);
+        Utils\AddNote::setTargetCharset('UTF-8');
 
         Utils\AddNote::bugfree([$file], false);
 
         $this->assertEquals(substr_count(file_get_contents($file),'佛'), 1);
 
         Utils\AddNote::setDel(true);
+        Utils\AddNote::setTargetCharset('UTF-8');
 
         Utils\AddNote::bugfree([$file], false);
 
@@ -44,6 +46,7 @@ class BugFreeTest extends TestCase
         $fileArr[] = dirname(__FILE__).'/demo1/demo2.php';
 
         Utils\AddNote::setDel(false);
+        Utils\AddNote::setTargetCharset('UTF-8');
 
         Utils\AddNote::bugfree($fileArr, false);
 
@@ -52,6 +55,7 @@ class BugFreeTest extends TestCase
         }, $fileArr);
 
         Utils\AddNote::setDel(true);
+        Utils\AddNote::setTargetCharset('UTF-8');
 
         Utils\AddNote::bugfree($fileArr, false);
 
@@ -70,12 +74,14 @@ class BugFreeTest extends TestCase
         $fileArr = dirname(__FILE__).'/demo1';
 
         Utils\AddNote::setDel(false);
+        Utils\AddNote::setTargetCharset('UTF-8');
 
         Utils\AddNote::bugfree([$fileArr], false);
 
         $this->assertDir($fileArr);
 
         Utils\AddNote::setDel(true);
+        Utils\AddNote::setTargetCharset('UTF-8');
 
         Utils\AddNote::bugfree([$fileArr], false);
 
@@ -93,6 +99,7 @@ class BugFreeTest extends TestCase
         $fileArr[] = dirname(__FILE__).'/demo2';
 
         Utils\AddNote::setDel(false);
+        Utils\AddNote::setTargetCharset('UTF-8');
 
         Utils\AddNote::bugfree($fileArr, false);
 
@@ -101,6 +108,7 @@ class BugFreeTest extends TestCase
         }, $fileArr);
 
         Utils\AddNote::setDel(true);
+        Utils\AddNote::setTargetCharset('UTF-8');
 
         Utils\AddNote::bugfree($fileArr, false);
 
@@ -120,6 +128,7 @@ class BugFreeTest extends TestCase
         $fileArr[] = dirname(__FILE__).'/demo2';
 
         Utils\AddNote::setDel(false);
+        Utils\AddNote::setTargetCharset('UTF-8');
 
         Utils\AddNote::bugfree($fileArr, false);
 
@@ -132,6 +141,7 @@ class BugFreeTest extends TestCase
         }, $fileArr);
 
         Utils\AddNote::setDel(true);
+        Utils\AddNote::setTargetCharset('UTF-8');
 
         Utils\AddNote::bugfree($fileArr, false);
 
