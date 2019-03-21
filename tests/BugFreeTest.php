@@ -3,18 +3,18 @@
  * Created by PhpStorm.
  * User: jyl
  * Date: 2019/1/24
- * Time: 11:04 AM
+ * Time: 11:04 AM.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
-use PHPUnit\Framework\TestCase;
 use BugFree\Utils as Utils;
+use PHPUnit\Framework\TestCase;
 
 class BugFreeTest extends TestCase
 {
     /**
-     * 单文件
+     * 单文件.
      */
     public function testSingleFile()
     {
@@ -25,18 +25,18 @@ class BugFreeTest extends TestCase
 
         Utils\AddNote::bugfree([$file], false);
 
-        $this->assertEquals(substr_count(file_get_contents($file),'佛'), 1);
+        $this->assertEquals(substr_count(file_get_contents($file), '佛'), 1);
 
         Utils\AddNote::setDel(true);
         Utils\AddNote::setTargetCharset('UTF-8');
 
         Utils\AddNote::bugfree([$file], false);
 
-        $this->assertEquals(substr_count(file_get_contents($file),'佛'), 0);
+        $this->assertEquals(substr_count(file_get_contents($file), '佛'), 0);
     }
 
     /**
-     * 多文件
+     * 多文件.
      *
      * @depends testSingleFile
      */
@@ -50,8 +50,8 @@ class BugFreeTest extends TestCase
 
         Utils\AddNote::bugfree($fileArr, false);
 
-        array_map(function($val) {
-            $this->assertEquals(substr_count(file_get_contents($val),'佛'), 1);
+        array_map(function ($val) {
+            $this->assertEquals(substr_count(file_get_contents($val), '佛'), 1);
         }, $fileArr);
 
         Utils\AddNote::setDel(true);
@@ -59,13 +59,13 @@ class BugFreeTest extends TestCase
 
         Utils\AddNote::bugfree($fileArr, false);
 
-        array_map(function($val) {
-            $this->assertEquals(substr_count(file_get_contents($val),'佛'), 0);
+        array_map(function ($val) {
+            $this->assertEquals(substr_count(file_get_contents($val), '佛'), 0);
         }, $fileArr);
     }
 
     /**
-     * 单目录
+     * 单目录.
      *
      * @depends testMultipleFiles
      */
@@ -89,7 +89,7 @@ class BugFreeTest extends TestCase
     }
 
     /**
-     * 多目录
+     * 多目录.
      *
      * @depends testSingleDirectory
      */
@@ -103,7 +103,7 @@ class BugFreeTest extends TestCase
 
         Utils\AddNote::bugfree($fileArr, false);
 
-        array_map(function($val) {
+        array_map(function ($val) {
             $this->assertDir($val);
         }, $fileArr);
 
@@ -112,13 +112,13 @@ class BugFreeTest extends TestCase
 
         Utils\AddNote::bugfree($fileArr, false);
 
-        array_map(function($val) {
+        array_map(function ($val) {
             $this->assertDir($val, 0);
         }, $fileArr);
     }
 
     /**
-     * 文件目录
+     * 文件目录.
      *
      * @depends testMultipleDirectories
      */
@@ -132,10 +132,10 @@ class BugFreeTest extends TestCase
 
         Utils\AddNote::bugfree($fileArr, false);
 
-        array_map(function($val) {
+        array_map(function ($val) {
             if (is_file($val)) {
-                $this->assertEquals(substr_count(file_get_contents($val),'佛'), 1);
-            } else if (is_dir($val)) {
+                $this->assertEquals(substr_count(file_get_contents($val), '佛'), 1);
+            } elseif (is_dir($val)) {
                 $this->assertDir($val);
             }
         }, $fileArr);
@@ -145,35 +145,35 @@ class BugFreeTest extends TestCase
 
         Utils\AddNote::bugfree($fileArr, false);
 
-        array_map(function($val) {
+        array_map(function ($val) {
             if (is_file($val)) {
-                $this->assertEquals(substr_count(file_get_contents($val),'佛'), 0);
-            } else if (is_dir($val)) {
+                $this->assertEquals(substr_count(file_get_contents($val), '佛'), 0);
+            } elseif (is_dir($val)) {
                 $this->assertDir($val, 0);
             }
         }, $fileArr);
     }
 
     /**
-     * 断言目录
+     * 断言目录.
      *
      * @param string $dir
-     * @param integer $actual
+     * @param int    $actual
      */
     private function assertDir($dir, $actual = 1)
     {
         $handle = opendir($dir);
 
-        while( ($file = readdir($handle)) !== false )
-        {
-            if( $file == '.' || $file == '..' )
+        while (($file = readdir($handle)) !== false) {
+            if ($file == '.' || $file == '..') {
                 continue;
+            }
 
             $file = $dir.DIRECTORY_SEPARATOR.$file;
-            if (is_file($file) && substr($file,-4) === '.php') {
+            if (is_file($file) && substr($file, -4) === '.php') {
                 // 文件
-                $this->assertEquals(substr_count(file_get_contents($file),'佛'), $actual);
-            } else if (is_dir($file)) {
+                $this->assertEquals(substr_count(file_get_contents($file), '佛'), $actual);
+            } elseif (is_dir($file)) {
                 //递归查询
                 $this->assertDir($file);
             }

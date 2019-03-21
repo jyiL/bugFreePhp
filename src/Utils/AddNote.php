@@ -1,33 +1,35 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace BugFree\Utils;
 
 /**
- * Class AddNote
- * @package BugFree\Utils
+ * Class AddNote.
  */
-
 class AddNote
 {
-    static private $del = false;
+    private static $del = false;
 
-    static private $fileType = 'UTF-8';
+    private static $fileType = 'UTF-8';
 
-    static private $targetCharset = 'UTF-8';
+    private static $targetCharset = 'UTF-8';
 
     /**
-     * 用佛祖保佑文件
+     * 用佛祖保佑文件.
      *
      * @param array $filepath 添加注释文件路径 支持文件目录，单文件，多文件(数组)
-     * @param boolean $prompt 是否开启提示
+     * @param bool  $prompt   是否开启提示
      */
-    static public function bugfree($filepath, $prompt = true)
+    public static function bugfree($filepath, $prompt = true)
     {
-        if ($prompt) self::printfString('开始保佑');
+        if ($prompt) {
+            self::printfString('开始保佑');
+        }
 
-        if ($prompt) self::printfString(self::getFoZuTxt(), false);
+        if ($prompt) {
+            self::printfString(self::getFoZuTxt(), false);
+        }
 
         try {
             // 判断单文件还是多文件
@@ -38,34 +40,35 @@ class AddNote
                 // 单文件
                 self::dealFiles(array_shift($filepath));
             }
-
         } catch (\Exception $e) {
             printf($e->getMessage().PHP_EOL);
             printf($e->getLine().PHP_EOL);
             exit;
         }
 
-        if ($prompt) self::printfString('保佑完成');
+        if ($prompt) {
+            self::printfString('保佑完成');
+        }
     }
 
     /**
-     * 多文件佛祖保佑
+     * 多文件佛祖保佑.
      *
      * @param array $fileArr
      */
-    static private function manyFiles($fileArr)
+    private static function manyFiles($fileArr)
     {
-        array_map(function($val) {
+        array_map(function ($val) {
             self::dealFiles($val);
         }, $fileArr);
     }
 
     /**
-     *  处理文件/目录
+     *  处理文件/目录.
      *
      * @param mixed $fileArr
      */
-    static private function dealFiles($fileArr)
+    private static function dealFiles($fileArr)
     {
         if (is_file($fileArr)) {
             // 文件
@@ -77,24 +80,24 @@ class AddNote
     }
 
     /**
-     * 佛祖保佑
+     * 佛祖保佑.
      *
      * @param string $filepath
      */
-    static private function dirFoZuBaoYou($dirPath)
+    private static function dirFoZuBaoYou($dirPath)
     {
         $handle = opendir($dirPath);
 
-        while( ($file = readdir($handle)) !== false )
-        {
-            if( $file == '.' || $file == '..' )
+        while (($file = readdir($handle)) !== false) {
+            if ($file == '.' || $file == '..') {
                 continue;
+            }
 
             $file = $dirPath.DIRECTORY_SEPARATOR.$file;
-            if (is_file($file) && substr($file,-4) === '.php') {
+            if (is_file($file) && substr($file, -4) === '.php') {
                 // 文件
                 self::foZuBaoYou($file);
-            } else if (is_dir($file)) {
+            } elseif (is_dir($file)) {
                 //递归查询
                 self::dirFoZuBaoYou($file);
             }
@@ -104,11 +107,11 @@ class AddNote
     }
 
     /**
-     * 佛祖保佑
+     * 佛祖保佑.
      *
      * @param string $filepath
      */
-    static private function foZuBaoYou($filePath)
+    private static function foZuBaoYou($filePath)
     {
         // 读取待保佑文件
         $originStr = file_get_contents($filePath);
@@ -120,14 +123,15 @@ class AddNote
         switch (self::$del) {
             case false:
                 if (!self::checkFoZu($originStr)) {
-                    $originArr = explode('php',$originStr);
+                    $originArr = explode('php', $originStr);
                     $originArr[1] = PHP_EOL.$foZuTxt.$originArr[1];
-                    $newAdd = implode('php',$originArr);
+                    $newAdd = implode('php', $originArr);
                 }
                 break;
             case true:
-                if (self::checkFoZu($originStr))
+                if (self::checkFoZu($originStr)) {
                     $newAdd = str_replace($foZuTxt.PHP_EOL, '', $originStr);
+                }
                 break;
             default:
                 $newAdd = $originStr;
@@ -139,14 +143,13 @@ class AddNote
 
     /**
      * 转换字符集编码
-     * 
+     *
      * @param $data
-     * 
+     *
      * @return string
      */
-    static private function characet($data)
+    private static function characet($data)
     {
-
         if (!empty($data)) {
             if (strcasecmp(self::$fileType, self::$targetCharset) != 0) {
                 $data = mb_convert_encoding($data, self::$targetCharset, self::$fileType);
@@ -158,23 +161,23 @@ class AddNote
     }
 
     /**
-     * 检测是否存在佛祖保护
+     * 检测是否存在佛祖保护.
      *
      * @param string $txt
      *
      * @return boolean
      */
-    static private function checkFoZu($txt)
+    private static function checkFoZu($txt)
     {
-        return substr_count($txt,'佛');
+        return substr_count($txt, '佛');
     }
 
     /**
-     * 获取佛祖文本
+     * 获取佛祖文本.
      *
      * @return string
      */
-    static private function getFoZuTxt()
+    private static function getFoZuTxt()
     {
         $_fozuFilePath = '';
         switch (strtoupper(self::$targetCharset)) {
@@ -184,7 +187,7 @@ class AddNote
             case 'GBK':
                 $_fozuFilePath = dirname(__DIR__).'/Configs/fozu_gbk.txt';
                 break;
-            default:    
+            default:
                 $_fozuFilePath = dirname(__DIR__).'/Configs/fozu_utf8.txt';
                 break;
         }
@@ -193,35 +196,36 @@ class AddNote
     }
 
     /**
-     * 打印文字
+     * 打印文字.
      *
      * @param string $text
-     * @param boolean $flag
+     * @param bool   $flag
      */
-    static private function printfString($text, $flag = true)
+    private static function printfString($text, $flag = true)
     {
-        if ($flag)
+        if ($flag) {
             printf("--------------------{$text}--------------------".PHP_EOL);
-        else
+        } else {
             printf("{$text}".PHP_EOL);
+        }
     }
 
     /**
-     * 设置属性
+     * 设置属性.
      *
-     * @param boolean $del
+     * @param bool $del
      */
-    static public function setDel(bool $del)
+    public static function setDel(bool $del)
     {
         self::$del = $del;
     }
 
     /**
-     * 设置文本编码属性
+     * 设置文本编码属性.
      *
      * @param string $targetCharset
      */
-    static public function setTargetCharset(string $targetCharset)
+    public static function setTargetCharset(string $targetCharset)
     {
         self::$targetCharset = $targetCharset;
     }
